@@ -1,4 +1,4 @@
-package com.example.kriss.unbrable;
+package nz.ac.auckland.unbrable;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

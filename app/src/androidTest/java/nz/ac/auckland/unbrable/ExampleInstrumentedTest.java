@@ -1,4 +1,4 @@
-package com.example.kriss.unbrable;
+package nz.ac.auckland.unbrable;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
