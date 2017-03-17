@@ -3,11 +3,12 @@ package nz.ac.auckland.unbrable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class CalculatorActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculator);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_login);
     }
 }
