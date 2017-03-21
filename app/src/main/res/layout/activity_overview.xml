@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00cc99"
     tools:context="nz.ac.auckland.unbrable.OverviewActivity">
 
     <ListView
@@ -25,6 +24,7 @@
         android:clickable="true"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add_white_24dp"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        android:onClick="addEntry"/>
 
 </RelativeLayout>

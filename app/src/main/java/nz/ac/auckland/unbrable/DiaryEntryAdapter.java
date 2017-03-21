@@ -11,14 +11,14 @@ import android.widget.TextView;
 import java.util.List;
 
 
-public class DiaryEntryAdapter extends ArrayAdapter<DiaryEntry> {
+public class DiaryEntryAdapter extends ArrayAdapter<Entry> {
 
     private static class ViewHolder {
         private ImageView thumbnail;
-        private TextView text;
+        private TextView date;
     }
 
-    public DiaryEntryAdapter(Context context, int resourceId, List<DiaryEntry> items) {
+    public DiaryEntryAdapter(Context context, int resourceId, List<Entry> items) {
         super(context, resourceId, items);
     }
 
@@ -35,23 +35,23 @@ public class DiaryEntryAdapter extends ArrayAdapter<DiaryEntry> {
             viewHolder = new ViewHolder();
 
             viewHolder.thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            viewHolder.text = (TextView) view.findViewById(R.id.textView);
+            viewHolder.date = (TextView) view.findViewById(R.id.textView);
 
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        DiaryEntry entry = getItem(position);
+        Entry entry = getItem(position);
 
         if(entry != null) {
 
-            if(entry.getImage() != null) {
-                viewHolder.thumbnail.setImageURI(entry.getImage());
+            if(entry.getImageUri() != null) {
+                viewHolder.thumbnail.setImageURI(entry.getImageUri());
             }
 
-            if(entry.getText() != null) {
-                viewHolder.text.setText(entry.getText());
+            if(entry.getDate() != null) {
+                viewHolder.date.setText(entry.getStringDate());
             }
         }
 

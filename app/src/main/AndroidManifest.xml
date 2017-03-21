@@ -20,7 +20,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".OverviewActivity"></activity>
+        <activity android:name=".DiaryEntry" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nz.ac.auckland.unbrable.OverviewActivity" />
+        </activity>
+        <activity android:name=".EditDiaryEntry">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nz.ac.auckland.unbrable.OverviewActivity" />
+        </activity>
+
     </application>
 
 </manifest>
