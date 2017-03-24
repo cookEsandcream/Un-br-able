@@ -1,19 +1,33 @@
 package nz.ac.auckland.unbrable;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 public class EditDiaryEntry extends AppCompatActivity {
+
+    private final int CAMERA_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_diary_entry);
+
+        ImageButton cameraButton = (ImageButton) findViewById(R.id.imageButton);
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), CAMERA_IMAGE);
+            }
+        });
     }
 
     @Override
@@ -38,5 +52,16 @@ public class EditDiaryEntry extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_IMAGE) {
+                Uri imageUri = data.getData();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
