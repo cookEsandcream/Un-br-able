@@ -1,10 +1,13 @@
 package nz.ac.auckland.unbrable;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.io.BufferedReader;
@@ -15,12 +18,18 @@ import java.io.InputStreamReader;
 public class LoginActivity extends AppCompatActivity {
 
     EditText pwText;
+    String incorrectPwMessage = "Password is Incorrect";
+
+    Snackbar incorrectPasswordSnackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+
+        incorrectPasswordSnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
+                incorrectPwMessage, Snackbar.LENGTH_LONG);
     }
 
     public void checkLogin(View view) {
@@ -42,10 +51,16 @@ public class LoginActivity extends AppCompatActivity {
         //Password is incorrect
         else{
             Log.d("Tag","password is false");
+            incorrectPasswordSnackbar.show();
+            hideSoftKeyboard(this);
             pwText.setText("");
         }
+    }
 
+    private static void hideSoftKeyboard(Activity activity) {
 
+        InputMethodManager inputMethodManager = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     private String readFromAssetFile(){
