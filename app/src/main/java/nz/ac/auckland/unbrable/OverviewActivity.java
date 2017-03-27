@@ -33,6 +33,7 @@ public class OverviewActivity extends AppCompatActivity {
         entry3.setText("Item3");
 
         List<Entry> entries = new ArrayList<Entry>();
+        // Load here
         entries.add(entry1);
         entries.add(entry2);
         entries.add(entry3);
@@ -58,8 +59,8 @@ public class OverviewActivity extends AppCompatActivity {
                     bundle.putString("date", entry.getStringDate());
                 }
 
-                if(entry.getImageUri() != null) {
-                    bundle.putString("imageUri", entry.getImageUri().toString());
+                if(entry.getImageBitmap() != null) {
+                    bundle.putString("imageUri", entry.getImageBitmap().toString());
                 }
 
                 if(entry.getText() != null) {

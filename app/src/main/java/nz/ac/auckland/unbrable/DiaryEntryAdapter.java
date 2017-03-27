@@ -46,8 +46,8 @@ public class DiaryEntryAdapter extends ArrayAdapter<Entry> {
 
         if(entry != null) {
 
-            if(entry.getImageUri() != null) {
-                viewHolder.thumbnail.setImageURI(entry.getImageUri());
+            if(entry.getImageBitmap() != null) {
+                viewHolder.thumbnail.setImageBitmap(entry.getImageBitmap());
             }
 
             if(entry.getDate() != null) {
