@@ -3,6 +3,7 @@ package nz.ac.auckland.unbrable;
 
 import android.net.Uri;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,5 +54,9 @@ public class Entry {
 
     public String getText() {
         return _text;
+    }
+
+    public void save(){
+
     }
 }

@@ -53,6 +53,9 @@ public class EditDiaryEntry extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            // Save button functionality
+            case R.string.save:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
