@@ -1,6 +1,8 @@
 package nz.ac.auckland.unbrable;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,17 +27,10 @@ public class OverviewActivity extends AppCompatActivity {
 
     private void populateEntries() {
 
-        Entry entry1 = new Entry(new Date());
-        entry1.setText("Item1");
-        Entry entry2 = new Entry(new Date());
-        entry2.setText("Item2");
-        Entry entry3 = new Entry(new Date());
-        entry3.setText("Item3");
-
-        List<Entry> entries = new ArrayList<Entry>();
-        entries.add(entry1);
-        entries.add(entry2);
-        entries.add(entry3);
+        List<Entry> entries = LoadEntries();
+        if (entries.isEmpty()){
+            entries.add(new Entry(new Date(System.currentTimeMillis()), "My First Entry"));
+        }
 
         DiaryEntryAdapter adapter = new DiaryEntryAdapter(this, R.layout.list_item, entries);
 
@@ -44,6 +39,7 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     private void registerClickCallback() {
+
         final ListView list = (ListView) findViewById(R.id.listView);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,8 +54,8 @@ public class OverviewActivity extends AppCompatActivity {
                     bundle.putString("date", entry.getStringDate());
                 }
 
-                if(entry.getImageUri() != null) {
-                    bundle.putString("imageUri", entry.getImageUri().toString());
+                if(entry.getImageBitmap() != null) {
+                    bundle.putString("imageUri", entry.getImageBitmap().toString());
                 }
 
                 if(entry.getText() != null) {
@@ -76,5 +72,26 @@ public class OverviewActivity extends AppCompatActivity {
     public void addEntry(View v) {
         Intent myIntent = new Intent(OverviewActivity.this, EditDiaryEntry.class);
         OverviewActivity.this.startActivity(myIntent);
+    }
+
+    private List<Entry> LoadEntries(){
+        DiaryEntryDbHelper dbHelper = new DiaryEntryDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String[] projection = {
+                DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE,
+                DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY,
+                DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_BITMAP,
+        };
+        Cursor cursor = db.query(DiaryEntryContract.DiaryEntryColumns.TABLE_NAME,projection,null,null,null,null,null);
+        List<Entry> results = new ArrayList<>();
+        while (cursor.moveToNext()){
+            long resultDate = cursor.getLong(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE));
+            String resultText = cursor.getString(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY));
+            String resultBitmap = cursor.getString(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_BITMAP));
+            results.add(new SerialisedEntry(resultDate,resultBitmap,resultText));
+        }
+        cursor.close();
+        dbHelper.close();
+        return results;
     }
 }

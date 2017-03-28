@@ -2,7 +2,6 @@ package nz.ac.auckland.unbrable;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
@@ -11,13 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import java.util.Date;
 
 public class EditDiaryEntry extends AppCompatActivity {
 
     private final int CAMERA_IMAGE = 1;
     ImageButton cameraButton;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class EditDiaryEntry extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        final MenuItem menuItem = menu.add(Menu.NONE, 1000, Menu.NONE, R.string.save);
+        final MenuItem menuItem = menu.add(Menu.NONE, R.string.save, Menu.NONE, R.string.save);
 
         Intent myIntent = new Intent(EditDiaryEntry.this, OverviewActivity.class);
         menuItem.setIntent(myIntent);
@@ -53,6 +56,26 @@ public class EditDiaryEntry extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            // Save button functionality
+            case R.string.save:
+                Entry thisEntry;
+
+                if (bitmap == null){
+                    thisEntry  = new Entry(
+                            new Date(System.currentTimeMillis()),
+                            ((EditText) findViewById(R.id.editText)).getText().toString()
+                    );
+                } else {
+                    thisEntry = new Entry(
+                            new Date(System.currentTimeMillis()),
+                            bitmap,
+                            ((EditText) findViewById(R.id.editText)).getText().toString()
+                    );
+                }
+
+                thisEntry.save(this);
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -61,7 +84,7 @@ public class EditDiaryEntry extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_IMAGE) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                bitmap = (Bitmap) data.getExtras().get("data");
                 ImageView imageView = (ImageView) findViewById(R.id.image_view);
                 imageView.setImageBitmap(bitmap);
                 imageView.setVisibility(View.VISIBLE);
