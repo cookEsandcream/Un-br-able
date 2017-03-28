@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class DiaryEntryDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 0;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "DiaryEntries.db";
 
     public DiaryEntryDbHelper(Context context) {
