@@ -63,13 +63,13 @@ public class EditDiaryEntry extends AppCompatActivity {
                 if (bitmap == null){
                     thisEntry  = new Entry(
                             new Date(System.currentTimeMillis()),
-                            ((EditText) findViewById(R.id.diary_text)).getText().toString()
+                            ((EditText) findViewById(R.id.editText)).getText().toString()
                     );
                 } else {
                     thisEntry = new Entry(
                             new Date(System.currentTimeMillis()),
                             bitmap,
-                            ((EditText) findViewById(R.id.diary_text)).getText().toString()
+                            ((EditText) findViewById(R.id.editText)).getText().toString()
                     );
                 }
 
