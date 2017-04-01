@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/pwText"
+        android:id="@+id/diary_text"
         android:hint="@string/hint"
         android:selectAllOnFocus="false"
         android:layout_marginTop="20dp" />
