@@ -16,6 +16,8 @@ public final class DiaryEntryContract {
         public static final String COLUMN_NAME_BITMAP = "Image_Bitmap";
         public static final String COLUMN_NAME_ENTRY = "Entry_Text";
         public static final String COLUMN_NAME_DATE = "Date";
+        public static final String PW_TABLE = "Password_Table";
+        public static final String PASSWORD = "Password";
     }
 
     public static final String SQL_CREATE_TABLE =
@@ -24,6 +26,12 @@ public final class DiaryEntryContract {
                     DiaryEntryColumns.COLUMN_NAME_BITMAP + " TEXT," +
                     DiaryEntryColumns.COLUMN_NAME_ENTRY + " TEXT," +
                     DiaryEntryColumns.COLUMN_NAME_DATE + " INTEGER);";
+
+    public static final String SQL_CREATE_PW_TABLE =
+            "CREATE TABLE " + DiaryEntryColumns.PW_TABLE + " (" +
+                    DiaryEntryColumns._ID + " INTEGER PRIMARY KEY," +
+                    DiaryEntryColumns.PASSWORD + " TEXT);" ;
+
     public static final String SQL_DELETE_TABLE =
             "DROP TABLE IF EXISTS " + DiaryEntryColumns.TABLE_NAME;
 
