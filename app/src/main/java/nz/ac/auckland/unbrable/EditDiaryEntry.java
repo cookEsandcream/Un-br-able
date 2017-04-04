@@ -2,6 +2,7 @@ package nz.ac.auckland.unbrable;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
@@ -85,6 +86,9 @@ public class EditDiaryEntry extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_IMAGE) {
                 bitmap = (Bitmap) data.getExtras().get("data");
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                 ImageView imageView = (ImageView) findViewById(R.id.image_view);
                 imageView.setImageBitmap(bitmap);
                 imageView.setVisibility(View.VISIBLE);
