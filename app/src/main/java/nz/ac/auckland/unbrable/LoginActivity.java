@@ -2,6 +2,8 @@ package nz.ac.auckland.unbrable;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.widget.EditText;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -37,11 +41,18 @@ public class LoginActivity extends AppCompatActivity {
         pwText = (EditText)findViewById(R.id.pwText);
         Log.d("Input",pwText.getText().toString());
 
-        String password = readFromAssetFile();
-        Log.d("Password",password);
+        PasswordDbHelper dbHelper = new PasswordDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {DiaryEntryContract.DiaryEntryColumns.PASSWORD};
+
+        Cursor cursor = db.query(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,projection,null,null,null,null,null);
+        cursor.moveToLast();
+        String resultText = cursor.getString(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.PASSWORD));
+
 
         //If the password is correct then redirect to screen
-        if(pwText.getText().toString().equals(password)){
+        if(pwText.getText().toString().equals(resultText)){
             Log.d("Tag","password is true");
 
             //switch to overview activity
@@ -55,6 +66,11 @@ public class LoginActivity extends AppCompatActivity {
             hideSoftKeyboard(this);
             pwText.setText("");
         }
+
+
+        cursor.close();
+        dbHelper.close();
+
     }
 
     private static void hideSoftKeyboard(Activity activity) {

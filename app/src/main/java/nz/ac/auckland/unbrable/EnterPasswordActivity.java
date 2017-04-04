@@ -1,8 +1,10 @@
 package nz.ac.auckland.unbrable;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -68,6 +70,16 @@ public class EnterPasswordActivity extends AppCompatActivity {
     }
 
     private void storePassword(String password){
+            Log.d("Tag","password is "+password);
+
+            PasswordDbHelper dbHelper = new PasswordDbHelper(this);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(DiaryEntryContract.DiaryEntryColumns.PASSWORD, password);
+
+            db.insert(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,null,values);
+            dbHelper.close();
 
     }
 }
