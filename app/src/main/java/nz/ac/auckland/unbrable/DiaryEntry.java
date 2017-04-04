@@ -21,7 +21,7 @@ public class DiaryEntry extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         String date = bundle.getString("date");
-        String imageUri = bundle.getString("imageUri");
+        String imageBitmap = bundle.getString("imageBitmap");
         String text = bundle.getString("text");
 
         TextView dateView = (TextView) findViewById(R.id.textView2);
@@ -30,8 +30,8 @@ public class DiaryEntry extends AppCompatActivity {
         }
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        if(imageUri != null) {
-            imageView.setImageURI(Uri.parse(imageUri));
+        if(imageBitmap != null) {
+            imageView.setImageBitmap(SerialisedEntry.stringToBitmap(imageBitmap));
         }
 
         TextView textView = (TextView) findViewById(R.id.textView);

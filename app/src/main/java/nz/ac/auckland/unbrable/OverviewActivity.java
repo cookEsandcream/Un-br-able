@@ -55,7 +55,7 @@ public class OverviewActivity extends AppCompatActivity {
                 }
 
                 if(entry.getImageBitmap() != null) {
-                    bundle.putString("imageUri", entry.getImageBitmap().toString());
+                    bundle.putString("imageBitmap", entry.bitmapToString(entry.getImageBitmap()));
                 }
 
                 if(entry.getText() != null) {
