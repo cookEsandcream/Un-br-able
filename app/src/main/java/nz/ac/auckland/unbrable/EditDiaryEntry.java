@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 public class EditDiaryEntry extends AppCompatActivity {
@@ -94,11 +95,10 @@ public class EditDiaryEntry extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_IMAGE) {
                 captureSuccess = true;
-
-                ImageView imageView = (ImageView) findViewById(R.id.image_view);
-                imageView.setImageURI(fileUri);
-                imageView.setVisibility(View.VISIBLE);
-                cameraButton.setVisibility(View.GONE);
+                    ImageView imageView = (ImageView) findViewById(R.id.image_view);
+                    imageView.setImageURI(fileUri);
+                    imageView.setVisibility(View.VISIBLE);
+                    cameraButton.setVisibility(View.GONE);
             }
         }
 
