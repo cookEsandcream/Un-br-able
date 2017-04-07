@@ -3,6 +3,7 @@ package nz.ac.auckland.unbrable;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -54,8 +55,8 @@ public class OverviewActivity extends AppCompatActivity {
                     bundle.putString("date", entry.getStringDate());
                 }
 
-                if(entry.getImageBitmap() != null) {
-                    bundle.putString("imageBitmap", entry.bitmapToString(entry.getImageBitmap()));
+                if(entry.getImageUri() != null) {
+                    bundle.putString("imageUri", entry.getImageUri().toString());
                 }
 
                 if(entry.getText() != null) {
@@ -80,15 +81,15 @@ public class OverviewActivity extends AppCompatActivity {
         String[] projection = {
                 DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE,
                 DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY,
-                DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_BITMAP,
+                DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_IMAGE,
         };
         Cursor cursor = db.query(DiaryEntryContract.DiaryEntryColumns.TABLE_NAME,projection,null,null,null,null,null);
         List<Entry> results = new ArrayList<>();
         while (cursor.moveToNext()){
             long resultDate = cursor.getLong(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE));
             String resultText = cursor.getString(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY));
-            String resultBitmap = cursor.getString(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_BITMAP));
-            results.add(new SerialisedEntry(resultDate,resultBitmap,resultText));
+            String resultUri = cursor.getString(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_IMAGE));
+            results.add(new Entry(new Date((resultDate)), Uri.parse(resultUri), resultText));
         }
         cursor.close();
         dbHelper.close();

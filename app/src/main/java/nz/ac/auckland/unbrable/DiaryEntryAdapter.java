@@ -1,6 +1,11 @@
 package nz.ac.auckland.unbrable;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
-
 
 public class DiaryEntryAdapter extends ArrayAdapter<Entry> {
 
@@ -46,8 +50,8 @@ public class DiaryEntryAdapter extends ArrayAdapter<Entry> {
 
         if(entry != null) {
 
-            if(entry.getImageBitmap() != null) {
-                viewHolder.thumbnail.setImageBitmap(entry.getImageBitmap());
+            if(entry.getImageUri() != null) {
+                viewHolder.thumbnail.setImageURI(entry.getImageUri());
             }
 
             if(entry.getDate() != null) {
