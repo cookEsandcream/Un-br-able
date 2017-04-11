@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ *  Activity class checking whether or not this is the first time user is running the app
+ */
 public class LauncherActivity extends AppCompatActivity {
 
     private Boolean firstTime = null;
@@ -15,6 +18,7 @@ public class LauncherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (isFirstTime()) {
+            // go to set a new password
             Intent intent = new Intent(LauncherActivity.this, EnterPasswordActivity.class);
             startActivity(intent);
         } else {
@@ -25,9 +29,11 @@ public class LauncherActivity extends AppCompatActivity {
 
     private boolean isFirstTime() {
         if (firstTime == null) {
+            // get first time information from preferences
             SharedPreferences mPreferences = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
             firstTime = mPreferences.getBoolean("firstTime", true);
             if (firstTime) {
+                // set first time to false
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putBoolean("firstTime", false);
                 editor.commit();

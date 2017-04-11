@@ -3,7 +3,8 @@ package nz.ac.auckland.unbrable;
 import android.provider.BaseColumns;
 
 /**
- * Base code from https://developer.android.com/training/basics/data-storage/databases.html
+ *  Class defining the commands for creating tables in the database that stores application data
+ *  Base code from https://developer.android.com/training/basics/data-storage/databases.html
  */
 public final class  DiaryEntryContract {
     // To prevent someone from accidentally instantiating the contract class,

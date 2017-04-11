@@ -1,26 +1,21 @@
 package nz.ac.auckland.unbrable;
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Base64;
 
-import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ *  Class representing a Diary Entry object in the application
+ */
 public class Entry {
     private Uri _imageUri = null;
     private Date _date = null;
     private String _text = null;
-
-    public Entry(Date date) {
-        this._date = date;
-    }
 
     public Entry(Date date, Uri imageUri, String text) {
         this._date = date;
@@ -32,15 +27,6 @@ public class Entry {
         this._date = date;
         this._text = text;
     }
-
-    public Entry(Date date, Uri imageUri){
-        this._date = date;
-        this._imageUri = imageUri;
-    }
-
-    public void setImageUri(Bitmap image) { this._imageUri = _imageUri; }
-
-    public void setDate(Date date) { this._date = date; }
 
     public void setText(String text) { this._text = text; }
 
@@ -67,6 +53,7 @@ public class Entry {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
+            // add entry object to the database
             values.put(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE, getDate().getTime());
             values.put(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY, getText());
             values.put(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_IMAGE, _imageUri.toString());

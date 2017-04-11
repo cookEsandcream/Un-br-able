@@ -1,15 +1,17 @@
 package nz.ac.auckland.unbrable;
 
-import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ *  Activity class for displaying a diary entry in the application
+ */
 public class DiaryEntry extends AppCompatActivity {
 
     @Override
@@ -17,13 +19,14 @@ public class DiaryEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_entry);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
+        // retrieve entry details from intent
+        Bundle bundle = getIntent().getExtras();
 
         String date = bundle.getString("date");
         String imageUri = bundle.getString("imageUri");
         String text = bundle.getString("text");
 
+        // set view properties
         TextView dateView = (TextView) findViewById(R.id.textView2);
         if(date != null) {
             dateView.setText(date);
@@ -42,6 +45,7 @@ public class DiaryEntry extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // set up back button in the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         return true;
