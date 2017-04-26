@@ -15,7 +15,7 @@ public final class  DiaryEntryContract {
     public static class DiaryEntryColumns implements BaseColumns {
         public static final String TABLE_NAME = "e8fkWOWueCVDQIesyPuK";
         public static final String COLUMN_NAME_IMAGE = "sxQzIUBWfSmiKNwFKpMH";
-        public static final String COLUMN_NAME_ENTRY = "8rKGXSc3kZ9331fKZxwv";
+        public static final String COLUMN_NAME_ENTRY = "r8KGXSc3kZ9331fKZxwv";
         public static final String COLUMN_NAME_DATE = "oUoahVYVrkDgRRzjofFz";
         public static final String PW_TABLE = "MZ32egdZ9c3jj0IL6JWK";
         public static final String PASSWORD = "ftWH0O5Kog1VJqHmR7pE";
