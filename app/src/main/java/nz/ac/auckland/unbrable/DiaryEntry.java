@@ -19,27 +19,17 @@ public class DiaryEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_entry);
 
-        // retrieve entry details from intent
-        Bundle bundle = getIntent().getExtras();
-
-        String date = bundle.getString("date");
-        String imageUri = bundle.getString("imageUri");
-        String text = bundle.getString("text");
-
         // set view properties
-        TextView dateView = (TextView) findViewById(R.id.textView2);
-        if(date != null) {
-            dateView.setText(date);
+        if(getIntent().getExtras().getString("date") != null) {
+            ((TextView) findViewById(R.id.textView2)).setText(getIntent().getExtras().getString("date"));
         }
 
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        if(imageUri != null) {
-            imageView.setImageURI(Uri.parse(imageUri));
+        if(getIntent().getExtras().getString("imageUri") != null) {
+            ((ImageView) findViewById(R.id.imageView)).setImageURI(Uri.parse(getIntent().getExtras().getString("imageUri")));
         }
 
-        TextView textView = (TextView) findViewById(R.id.textView);
-        if(text != null) {
-            textView.setText(text);
+        if(getIntent().getExtras().getString("text") != null) {
+            ((TextView) findViewById(R.id.textView)).setText(getIntent().getExtras().getString("text"));
         }
     }
 
