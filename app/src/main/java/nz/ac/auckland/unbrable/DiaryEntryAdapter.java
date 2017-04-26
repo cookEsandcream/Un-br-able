@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class DiaryEntryAdapter extends ArrayAdapter<Entry> {
 
+    ViewHolder viewHolder;
+
     private static class ViewHolder {
         private ImageView thumbnail;
         private TextView date;
@@ -26,35 +28,29 @@ public class DiaryEntryAdapter extends ArrayAdapter<Entry> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        ViewHolder viewHolder;
-
-        if (view == null) {
+        if (convertView == null) {
             // inflate list items with corresponding view
-            LayoutInflater vi = LayoutInflater.from(getContext());
-            view = vi.inflate(R.layout.list_item, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            viewHolder.date = (TextView) view.findViewById(R.id.textView);
+            viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.textView);
 
-            view.setTag(viewHolder);
+            convertView.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) view.getTag();
+            viewHolder = new ViewHolder();
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
         // set view properties
-        Entry entry = getItem(position);
-        if(entry != null) {
-            if(entry.getImageUri() != null) {
-                viewHolder.thumbnail.setImageURI(entry.getImageUri());
+        if(getItem(position) != null) {
+            if(getItem(position).getImageUri() != null) {
+                viewHolder.thumbnail.setImageURI(getItem(position).getImageUri());
             }
-
-            if(entry.getDate() != null) {
-                viewHolder.date.setText(entry.getStringDate());
+            if(getItem(position).getDate() != null) {
+                viewHolder.date.setText(getItem(position).getStringDate());
             }
         }
-
-        return view;
+        return convertView;
     }
 }
