@@ -13,12 +13,12 @@ public final class  DiaryEntryContract {
 
     /* Inner class that defines the table contents */
     public static class DiaryEntryColumns implements BaseColumns {
-        public static final String TABLE_NAME = "Entries";
-        public static final String COLUMN_NAME_IMAGE = "Image_Uri";
-        public static final String COLUMN_NAME_ENTRY = "Entry_Text";
-        public static final String COLUMN_NAME_DATE = "Date";
-        public static final String PW_TABLE = "Password_Table";
-        public static final String PASSWORD = "Password";
+        public static final String TABLE_NAME = "e8fkWOWueCVDQIesyPuK";
+        public static final String COLUMN_NAME_IMAGE = "sxQzIUBWfSmiKNwFKpMH";
+        public static final String COLUMN_NAME_ENTRY = "8rKGXSc3kZ9331fKZxwv";
+        public static final String COLUMN_NAME_DATE = "oUoahVYVrkDgRRzjofFz";
+        public static final String PW_TABLE = "MZ32egdZ9c3jj0IL6JWK";
+        public static final String PASSWORD = "ftWH0O5Kog1VJqHmR7pE";
     }
 
     public static final String SQL_CREATE_TABLE =
