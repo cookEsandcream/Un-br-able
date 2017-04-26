@@ -17,66 +17,51 @@ import android.widget.EditText;
  */
 public class EnterPasswordActivity extends AppCompatActivity {
 
-    private String incorrectPwMessage = "Passwords don't match!";
-    private String pwLengthMessage = "Password must be at least 4 characters long";
-    private Snackbar passwordMatchSnackbar;
-    private Snackbar passwordLengthSnackbar;
+    PasswordDbHelper dbHelper;
+    ContentValues values;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_enter_password);
-
-        // set up snackbars used to show error messages to user
-        passwordMatchSnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
-                incorrectPwMessage, Snackbar.LENGTH_LONG);
-        passwordLengthSnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
-                pwLengthMessage, Snackbar.LENGTH_LONG);
     }
 
     public void savePassword(View view) {
-        // get passwords from editText
-        EditText pwText = (EditText)findViewById(R.id.pwText);
-        String password = pwText.getText().toString();
-
-        EditText confText = (EditText)findViewById(R.id.pwText2);
-        String confirmPassword = confText.getText().toString();
 
         // validate the passwords and show errors where required
-        if (password.length() >= 4) {
-            if (password.equals(confirmPassword)) {
-                storePassword(password);
-                Intent myIntent = new Intent(EnterPasswordActivity.this, OverviewActivity.class);
-                startActivity(myIntent);
+        if (((EditText)findViewById(R.id.pwText)).getText().toString().length() >= 4) {
+            if (((EditText)findViewById(R.id.pwText)).getText().toString().equals(((EditText)findViewById(R.id.pwText2)).getText().toString())) {
+                storePassword(((EditText)findViewById(R.id.pwText)).getText().toString());
+                startActivity(new Intent(EnterPasswordActivity.this, OverviewActivity.class));
             } else {
-                passwordMatchSnackbar.show();
+                Snackbar.make(findViewById(R.id.myCoordinatorLayout),
+                        "Passwords don't match!", Snackbar.LENGTH_LONG).show();
                 hideSoftKeyboard(this);
-                pwText.setText("");
-                confText.setText("");
+                ((EditText)findViewById(R.id.pwText)).setText("");
+                ((EditText)findViewById(R.id.pwText2)).setText("");
             }
         } else {
-            passwordLengthSnackbar.show();
+            Snackbar.make(findViewById(R.id.myCoordinatorLayout),
+                    "Password must be at least 4 characters long", Snackbar.LENGTH_LONG).show();
             hideSoftKeyboard(this);
-            pwText.setText("");
-            confText.setText("");
+            ((EditText)findViewById(R.id.pwText)).setText("");
+            ((EditText)findViewById(R.id.pwText2)).setText("");
         }
     }
 
     private static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        ((InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     private void storePassword(String password){
-        PasswordDbHelper dbHelper = new PasswordDbHelper(this);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        dbHelper = new PasswordDbHelper(this);
 
         // add password to database
-        ContentValues values = new ContentValues();
+        values = new ContentValues();
         values.put(DiaryEntryContract.DiaryEntryColumns.PASSWORD, password);
 
-        db.insert(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,null,values);
+        dbHelper.getWritableDatabase().insert(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,null,values);
         dbHelper.close();
     }
 }
