@@ -17,6 +17,9 @@ public class Entry {
     private Date _date = null;
     private String _text = null;
 
+    ContentValues values;
+    DiaryEntryDbHelper dbHelper;
+
     public Entry(Date date, Uri imageUri, String text) {
         this._date = date;
         this._imageUri = imageUri;
@@ -39,8 +42,7 @@ public class Entry {
     }
 
     public String getStringDate() {
-        DateFormat dateFormat = new SimpleDateFormat("EEEE dd MMMM yyyy");
-        return dateFormat.format(_date);
+        return new SimpleDateFormat("EEEE dd MMMM yyyy").format(_date);
     }
 
     public String getText() {
@@ -49,16 +51,15 @@ public class Entry {
 
     public void save(Context context){
         try {
-            DiaryEntryDbHelper dbHelper = new DiaryEntryDbHelper(context);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            dbHelper = new DiaryEntryDbHelper(context);
 
-            ContentValues values = new ContentValues();
+            values = new ContentValues();
             // add entry object to the database
             values.put(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE, getDate().getTime());
             values.put(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY, getText());
             values.put(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_IMAGE, _imageUri.toString());
 
-            db.insert(DiaryEntryContract.DiaryEntryColumns.TABLE_NAME, null, values);
+            dbHelper.getWritableDatabase().insert(DiaryEntryContract.DiaryEntryColumns.TABLE_NAME, null, values);
             dbHelper.close();
         }catch(Exception e){
             e.printStackTrace();
