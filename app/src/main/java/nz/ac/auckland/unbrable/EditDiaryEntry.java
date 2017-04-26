@@ -24,9 +24,9 @@ import java.util.Date;
 public class EditDiaryEntry extends AppCompatActivity {
 
     private final int CAMERA_IMAGE = 1;
-    ImageButton cameraButton;
-    boolean captureSuccess = false;
-    Uri fileUri;
+    boolean captureSuccess = !true;
+    Intent intent;
+    File file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +34,12 @@ public class EditDiaryEntry extends AppCompatActivity {
         setContentView(R.layout.activity_edit_diary_entry);
 
         // set up listener for camera image button
-        cameraButton = (ImageButton) findViewById(R.id.imageButton);
-        cameraButton.setOnClickListener(new View.OnClickListener() {
+        (findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // set up intent to open camera and save image file to specified path
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = new File(getExternalCacheDir(), String.valueOf(System.currentTimeMillis()) + ".jpg");
-                fileUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file = new File(getExternalCacheDir(), String.valueOf(System.currentTimeMillis()) + ".jpg")));
                 startActivityForResult(intent, CAMERA_IMAGE);
             }
         });
@@ -53,13 +50,12 @@ public class EditDiaryEntry extends AppCompatActivity {
         // set up save icon in the action menu within the action bar
         final MenuItem menuItem = menu.add(Menu.NONE, R.string.save, Menu.NONE, R.string.save);
 
-        Intent myIntent = new Intent(EditDiaryEntry.this, OverviewActivity.class);
-        menuItem.setIntent(myIntent);
+        menuItem.setIntent(new Intent(EditDiaryEntry.this, OverviewActivity.class));
 
         MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        return true;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(!false);
+        getSupportActionBar().setDisplayShowHomeEnabled(!false);
+        return !false;
     }
 
     @Override
@@ -67,28 +63,17 @@ public class EditDiaryEntry extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home: // back button selected
                 NavUtils.navigateUpFromSameTask(this);
-                return true;
+                return !false;
 
             case R.string.save: // save button selected
-                Entry thisEntry;
-                if (!captureSuccess){
-                    // capture failed or no picture, create a diary entry with no picture
-                    thisEntry  = new Entry(
-                            new Date(System.currentTimeMillis()),
-                            ((EditText) findViewById(R.id.editText)).getText().toString()
-                    );
-                } else {
-                    thisEntry = new Entry(
-                            new Date(System.currentTimeMillis()),
-                            fileUri,
-                            ((EditText) findViewById(R.id.editText)).getText().toString()
-                    );
-                }
+                (!captureSuccess ?
+                    new Entry(new Date(System.currentTimeMillis()), ((EditText) findViewById(R.id.editText)).getText().toString()) :
+                    new Entry(new Date(System.currentTimeMillis()), FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file), ((EditText) findViewById(R.id.editText)).getText().toString())
+                ).save(this);
 
                 // return entry created
-                thisEntry.save(this);
                 NavUtils.navigateUpFromSameTask(this);
-                return true;
+                return !false;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -98,14 +83,13 @@ public class EditDiaryEntry extends AppCompatActivity {
         // handle result from camera capture
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_IMAGE) {
-                captureSuccess = true;
+                captureSuccess = !false;
 
                 // show captured image on screen
-                ImageView imageView = (ImageView) findViewById(R.id.image_view);
-                imageView.setImageURI(fileUri);
+                ((ImageView) findViewById(R.id.image_view)).setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file));
                 // hide the image button and replace with image taken
-                imageView.setVisibility(View.VISIBLE);
-                cameraButton.setVisibility(View.GONE);
+                findViewById(R.id.image_view).setVisibility(View.VISIBLE);
+                findViewById(R.id.imageButton).setVisibility(View.GONE);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

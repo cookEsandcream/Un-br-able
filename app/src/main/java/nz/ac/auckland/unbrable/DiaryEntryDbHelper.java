@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- *  Class includes helper functions for database operations in the application
+ * Class includes helper functions for database operations in the application
  * Base code from https://developer.android.com/training/basics/data-storage/databases.html
  */
 public class DiaryEntryDbHelper extends SQLiteOpenHelper {
