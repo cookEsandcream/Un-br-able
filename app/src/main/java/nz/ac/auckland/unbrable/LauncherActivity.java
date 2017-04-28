@@ -13,7 +13,15 @@ import android.os.Bundle;
  */
 public class LauncherActivity extends AppCompatActivity {
 
-    private Boolean firstTime = null;
+    private Boolean firstTime;
+    PasswordDbHelper dbHelper;
+    String[] projection = {DiaryEntryContract.DiaryEntryColumns.PASSWORD};
+    Cursor cursor;
+    String selection;
+    String[] selectionArgs;
+    String groupBy;
+    String having;
+    String orderBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,28 +29,19 @@ public class LauncherActivity extends AppCompatActivity {
 
         if (isFirstTime()) {
             // go to set a new password
-            Intent intent = new Intent(LauncherActivity.this, EnterPasswordActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(LauncherActivity.this, EnterPasswordActivity.class));
         } else {
-            Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
         }
     }
 
     private boolean isFirstTime() {
         // access database for password to check against
-        PasswordDbHelper dbHelper = new PasswordDbHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        dbHelper = new PasswordDbHelper(this);
 
-        String[] projection = {DiaryEntryContract.DiaryEntryColumns.PASSWORD};
+        cursor = dbHelper.getReadableDatabase().query(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,projection,selection,selectionArgs,groupBy,having,orderBy);
 
-        Cursor cursor = db.query(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,projection,null,null,null,null,null);
-
-        if(cursor.moveToFirst()){
-            firstTime = false;
-        }else{
-            firstTime = true;
-        }
+        firstTime = !cursor.moveToFirst();
 
         cursor.close();
         dbHelper.close();
