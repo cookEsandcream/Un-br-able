@@ -3,6 +3,8 @@ package nz.ac.auckland.unbrable;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -28,17 +30,22 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private boolean isFirstTime() {
-        if (firstTime == null) {
-            // get first time information from preferences
-            SharedPreferences mPreferences = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
-            firstTime = mPreferences.getBoolean("firstTime", true);
-            if (firstTime) {
-                // set first time to false
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.putBoolean("firstTime", false);
-                editor.commit();
-            }
+        // access database for password to check against
+        PasswordDbHelper dbHelper = new PasswordDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] projection = {DiaryEntryContract.DiaryEntryColumns.PASSWORD};
+
+        Cursor cursor = db.query(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,projection,null,null,null,null,null);
+
+        if(cursor.moveToFirst()){
+            firstTime = false;
+        }else{
+            firstTime = true;
         }
+
+        cursor.close();
+        dbHelper.close();
         return firstTime;
     }
 }
