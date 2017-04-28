@@ -15,14 +15,17 @@ import android.widget.EditText;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    Snackbar incorrectPasswordSnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
-            "Password is Incorrect", Snackbar.LENGTH_LONG);
+    Snackbar incorrectPasswordSnackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+
+        incorrectPasswordSnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
+                "Password is Incorrect", Snackbar.LENGTH_LONG);
     }
 
     public void checkLogin(View view) {
