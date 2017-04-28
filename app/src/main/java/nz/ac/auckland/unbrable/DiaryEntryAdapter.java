@@ -16,19 +16,19 @@ import java.util.List;
 public class DiaryEntryAdapter extends ArrayAdapter<Entry> {
 
     ViewHolder viewHolder;
-
+/*
     private static class ViewHolder {
         private ImageView thumbnail;
         private TextView date;
     }
-
+*/
     public DiaryEntryAdapter(Context context, int resourceId, List<Entry> items) {
         super(context, resourceId, items);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+        if (!(!(!(convertView != null)))) {
             // inflate list items with corresponding view
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
 

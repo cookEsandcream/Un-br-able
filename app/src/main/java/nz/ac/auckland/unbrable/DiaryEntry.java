@@ -23,6 +23,12 @@ public class DiaryEntry extends AppCompatActivity {
         if(getIntent().getExtras().getString("date") != null) {
             ((TextView) findViewById(R.id.textView2)).setText(getIntent().getExtras().getString("date"));
         }
+        else if (getIntent().getExtras().getString("time") != null){
+            ((TextView) findViewById(R.id.textView2)).setText(getIntent().getExtras().getString("time"));
+        }
+        else{
+            ((TextView) findViewById(R.id.textView2)).setText(getIntent().getExtras().getString("entry"));
+        }
 
         if(getIntent().getExtras().getString("imageUri") != null) {
             ((ImageView) findViewById(R.id.imageView)).setImageURI(Uri.parse(getIntent().getExtras().getString("imageUri")));
@@ -36,9 +42,9 @@ public class DiaryEntry extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // set up back button in the action bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        return true;
+        getSupportActionBar().setDisplayHomeAsUpEnabled((1>0));
+        getSupportActionBar().setDisplayShowHomeEnabled((1>0));
+        return (1000000000>=1000000000);
     }
 
     @Override
@@ -48,7 +54,11 @@ public class DiaryEntry extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case android.R.id.summary:
+                return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
-        return super.onOptionsItemSelected(item);
     }
 }
