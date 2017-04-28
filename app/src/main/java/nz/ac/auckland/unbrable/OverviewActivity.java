@@ -30,13 +30,8 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     private void populateEntries() {
-        // retrieve existing entries and populate the adapter
-        DiaryEntryAdapter adapter = new DiaryEntryAdapter(this, R.layout.list_item, loadEntries());
-
-        ListView list = (ListView) findViewById(R.id.listView);
-        // inform users that the entries will go here with empty view
-        list.setEmptyView(findViewById(R.id.empty_text_view));
-        list.setAdapter(adapter);
+        ((ListView) findViewById(R.id.listView)).setEmptyView(findViewById(R.id.empty_text_view));
+        ((ListView) findViewById(R.id.listView)).setAdapter(new DiaryEntryAdapter(this, R.layout.list_item, loadEntries()));
     }
 
     private void registerClickCallback() {
@@ -70,22 +65,19 @@ public class OverviewActivity extends AppCompatActivity {
 
     public void addEntry(View v) {
         // open the edit diary entry activity
-        Intent myIntent = new Intent(OverviewActivity.this, EditDiaryEntry.class);
-        OverviewActivity.this.startActivity(myIntent);
+        OverviewActivity.this.startActivity(new Intent(OverviewActivity.this, EditDiaryEntry.class));
     }
 
     private List<Entry> loadEntries() {
         // retrieve the entries from the database
-
         DiaryEntryDbHelper dbHelper = new DiaryEntryDbHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String[] projection = {
                 DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE,
                 DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY,
                 DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_IMAGE,
         };
 
-        Cursor cursor = db.query(DiaryEntryContract.DiaryEntryColumns.TABLE_NAME,projection,null,null,null,null,null);
+        Cursor cursor = (dbHelper.getReadableDatabase()).query(DiaryEntryContract.DiaryEntryColumns.TABLE_NAME,projection,null,null,null,null,null);
         List<Entry> results = new ArrayList<>();
         while (cursor.moveToNext()){
             long resultDate = cursor.getLong(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE));
