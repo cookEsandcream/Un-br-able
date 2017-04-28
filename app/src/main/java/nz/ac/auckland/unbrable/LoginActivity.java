@@ -15,7 +15,14 @@ import android.widget.EditText;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    Snackbar incorrectPasswordSnackbar;
+    PasswordDbHelper dbHelper;
+    String[] projection = {DiaryEntryContract.DiaryEntryColumns.PASSWORD};
+    Cursor cursor;
+    String selection;
+    String[] selectionArgs;
+    String groupBy;
+    String having;
+    String orderBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,28 +30,22 @@ public class LoginActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
-
-        incorrectPasswordSnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout),
-                "Password is Incorrect", Snackbar.LENGTH_LONG);
     }
 
     public void checkLogin(View view) {
 
-        PasswordDbHelper dbHelper = new PasswordDbHelper(this);
+        dbHelper = new PasswordDbHelper(this);
 
-        String[] projection = {DiaryEntryContract.DiaryEntryColumns.PASSWORD};
-
-        Cursor cursor = dbHelper.getReadableDatabase().query(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,projection,null,null,null,null,null);
+        cursor = dbHelper.getReadableDatabase().query(DiaryEntryContract.DiaryEntryColumns.PW_TABLE,projection,selection,selectionArgs,groupBy,having,orderBy);
         cursor.moveToLast();
 
         // If the password is correct then redirect to main screen
         if(((EditText)findViewById(R.id.pwText)).getText().toString().equals(cursor.getString(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.PASSWORD)))){
-            Intent myIntent = new Intent(LoginActivity.this, OverviewActivity.class);
-            startActivity(myIntent);
+            startActivity(new Intent(LoginActivity.this, OverviewActivity.class));
         } else {
             // Password is incorrect, show error and clear editText
             hideSoftKeyboard(this);
-            incorrectPasswordSnackbar.show();
+            Snackbar.make(findViewById(R.id.myCoordinatorLayout), "Password is Incorrect", Snackbar.LENGTH_LONG).show();
             ((EditText)findViewById(R.id.pwText)).setText("");
         }
 
@@ -53,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        ((InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }
