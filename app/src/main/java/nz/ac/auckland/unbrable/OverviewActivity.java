@@ -19,6 +19,24 @@ import java.util.List;
  */
 public class OverviewActivity extends AppCompatActivity {
 
+    Bundle bundle;
+    Intent myIntent;
+    DiaryEntryDbHelper dbHelper;
+    String[] projection = {
+            DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE,
+            DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY,
+            DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_IMAGE,
+    };
+    List<Entry> results;
+    Cursor cursor;
+    String selection;
+    String[] selectionArgs;
+    String groupBy;
+    String having;
+    String orderBy;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,28 +53,25 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
     private void registerClickCallback() {
-        final ListView list = (ListView) findViewById(R.id.listView);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ((ListView) findViewById(R.id.listView)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Entry entry = (Entry) list.getItemAtPosition(position);
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
 
                 // set up entry details to be sent to the activity in the intent
-                if(entry.getStringDate() != null) {
-                    bundle.putString("date", entry.getStringDate());
+                if(((Entry) ((ListView) findViewById(R.id.listView)).getItemAtPosition(position)).getStringDate() != null) {
+                    bundle.putString("date", ((Entry) ((ListView) findViewById(R.id.listView)).getItemAtPosition(position)).getStringDate());
                 }
 
-                if(entry.getImageUri() != null) {
-                    bundle.putString("imageUri", entry.getImageUri().toString());
+                if(((Entry) ((ListView) findViewById(R.id.listView)).getItemAtPosition(position)).getImageUri() != null) {
+                    bundle.putString("imageUri", ((Entry) ((ListView) findViewById(R.id.listView)).getItemAtPosition(position)).getImageUri().toString());
                 }
 
-                if(entry.getText() != null) {
-                    bundle.putString("text", entry.getText());
+                if(((Entry) ((ListView) findViewById(R.id.listView)).getItemAtPosition(position)).getText() != null) {
+                    bundle.putString("text", ((Entry) ((ListView) findViewById(R.id.listView)).getItemAtPosition(position)).getText());
                 }
 
-                Intent myIntent = new Intent(OverviewActivity.this, DiaryEntry.class);
+                myIntent = new Intent(OverviewActivity.this, DiaryEntry.class);
                 myIntent.putExtras(bundle);
                 OverviewActivity.this.startActivity(myIntent);
             }
@@ -70,15 +85,10 @@ public class OverviewActivity extends AppCompatActivity {
 
     private List<Entry> loadEntries() {
         // retrieve the entries from the database
-        DiaryEntryDbHelper dbHelper = new DiaryEntryDbHelper(this);
-        String[] projection = {
-                DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE,
-                DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY,
-                DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_IMAGE,
-        };
+        dbHelper = new DiaryEntryDbHelper(this);
 
-        Cursor cursor = (dbHelper.getReadableDatabase()).query(DiaryEntryContract.DiaryEntryColumns.TABLE_NAME,projection,null,null,null,null,null);
-        List<Entry> results = new ArrayList<>();
+        cursor = (dbHelper.getReadableDatabase()).query(DiaryEntryContract.DiaryEntryColumns.TABLE_NAME,projection,selection,selectionArgs,groupBy,having,orderBy);
+        results = new ArrayList<>();
         while (cursor.moveToNext()){
             long resultDate = cursor.getLong(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_DATE));
             String resultText = cursor.getString(cursor.getColumnIndex(DiaryEntryContract.DiaryEntryColumns.COLUMN_NAME_ENTRY));
