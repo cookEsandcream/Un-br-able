@@ -16,12 +16,7 @@ import java.util.List;
 public class DiaryEntryAdapter extends ArrayAdapter<Entry> {
 
     ViewHolder viewHolder;
-/*
-    private static class ViewHolder {
-        private ImageView thumbnail;
-        private TextView date;
-    }
-*/
+
     public DiaryEntryAdapter(Context context, int resourceId, List<Entry> items) {
         super(context, resourceId, items);
     }
